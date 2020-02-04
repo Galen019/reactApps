@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
+import Select from "./select";
 
 /**
  * Common form component, validates input data using Joi
@@ -15,20 +16,20 @@ class Form extends Component {
    * Validates inputs using Joi
    */
   validate = () => {
-    // Tell Joi to validate all fields, instaed of aborting early on the first error
+    // Tell Joi to validate all properties, instaed of aborting early on the first error
     const options = {
       abortEarly: false
     };
 
     /*
      * Destructure the object returned from Joi.validate, only need error
-     * Log the returned object if you want to what Joi actually returns
+     * console.log the returned object if you want to what Joi actually returns
      */
     const { error } = Joi.validate(this.state.data, this.schema, options);
     if (!error) return null;
 
+    // console.log(error);
     const errorMessages = {};
-    console.log(Joi.validate(this.state.data, this.schema, options));
 
     /*
      * Iterate over the details array in the error object, and fill the errorMessages object with the messages
@@ -55,7 +56,8 @@ class Form extends Component {
 
     /*
      * Create a schema with only one property, the one passed in as a parameter
-     * The value is re-used from the schema field in this class
+     * Copy a single field from the full Joi schema
+     * This is done to validate a single property in the schema, rather than the full object
      */
     const schema = {
       [name]: this.schema[name]
@@ -114,12 +116,18 @@ class Form extends Component {
   };
 
   /**
-   * Render a button that calls validate
+   * Render a submit button that calls validate to enable/disable the button
+   *
+   * NOTE: the default button type is "submit", if none is specified
    * @param {string} label - text of button
    */
   renderButton(label) {
     return (
-      <button disabled={this.validate()} className="btn btn-primary">
+      <button
+        disabled={this.validate()}
+        className="btn btn-primary"
+        type="submit"
+      >
         {label}
       </button>
     );
@@ -127,7 +135,8 @@ class Form extends Component {
 
   /**
    * Renders an Input component
-   * @param {string} name
+   *
+   * @param {string} name - this name is a property name in the Joi schema, used for validation
    * @param {string} label
    * @param {string} type - default value of "text"
    */
@@ -140,6 +149,28 @@ class Form extends Component {
         name={name}
         value={data[name]}
         label={label}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+
+  /**
+   * Renders a Select component
+   *
+   * @param {string} name
+   * @param {string} label
+   * @param {object} options
+   */
+  renderSelect(name, label, options) {
+    const { data, errors } = this.state;
+
+    return (
+      <Select
+        name={name}
+        value={data[name]}
+        label={label}
+        options={options}
         onChange={this.handleChange}
         error={errors[name]}
       />

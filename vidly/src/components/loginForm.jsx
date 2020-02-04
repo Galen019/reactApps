@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import Input from "./common/input";
 
 /**
  * Form component used in /login
@@ -25,6 +24,7 @@ class LoginForm extends Form {
   };
 
   doSubmit = () => {
+    // Call the server to log in
     console.log("Submitted");
   };
 

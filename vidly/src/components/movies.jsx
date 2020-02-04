@@ -6,6 +6,7 @@ import { getMovies } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
 import { paginate } from "../utils/paginate";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 
 class Movies extends Component {
   state = {
@@ -52,6 +53,10 @@ class Movies extends Component {
     this.setState({ currentPage: page });
   };
 
+  /**
+   * Adds a selectedGenre object to the state object
+   * Resets currentPage to 1
+   */
   handleGenreSelect = genre => {
     this.setState({ selectedGenre: genre });
     this.setState({ currentPage: 1 });
@@ -69,6 +74,7 @@ class Movies extends Component {
       selectedGenre,
       movies: allMovies
     } = this.state;
+
     /**
      * Check if selectedGenre and its _id field are truthy (not null)
      * if it is, filter the movies, otherwise return allMovies
@@ -103,6 +109,13 @@ class Movies extends Component {
           />
         </div>
         <div className="col">
+          <Link
+            to="/movies/new"
+            className="btn btn-primary"
+            stype={{ marginBottom: 20 }}
+          >
+            New Movie
+          </Link>
           <p>Showing {totalCount} movies</p>
           <MoviesTable
             movies={movies}

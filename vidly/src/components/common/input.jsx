@@ -1,7 +1,7 @@
 import React from "react";
 
 /**
- * Controlled component with an html input with a label, inside a form-group div
+ * Controlled component - input with a label
  *
  * @param {*} props - passed from parent (the controller), then destructured
  */
@@ -20,6 +20,8 @@ const Input = ({ name, label, error, ...rest }) => {
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
       <input {...rest} name={name} id={name} className="form-control" />
+
+      {/* error div only displays if the error variable is truthy */}
       {error && <div className="alert alert-danger">{error}</div>}
     </div>
   );

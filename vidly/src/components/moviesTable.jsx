@@ -12,7 +12,10 @@ class MoviesTable extends Component {
       path: "title",
       label: "Title",
 
-      // Functions can be passed around like objects, this is called from tableBody
+      /*
+       * functions can be passed around like objects, this is called from tableBody
+       * this function makes each title column in the table link to the movieForm (see App.js for the Routes)
+       */
       content: movie => <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
     },
     { path: "genre.name", label: "Genre" },
